@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { fetchPosts, fetchCategories } from '../actions'
 import { connect } from 'react-redux'
-import { Button, Glyphicon, Grid, Row, Col } from 'react-bootstrap'
+import { Grid, Row, Col } from 'react-bootstrap'
+import CategoryMenu from './CategoryMenu'
 
 class App extends Component {
 
@@ -17,16 +18,12 @@ class App extends Component {
         <Grid>
           <Row className="show-grid">
             <Col md={4}>
-              <ul>
-                {categories && categories.map(c => <li key={c.name}> {c.name} </li>)}
-              </ul>
+              <CategoryMenu categories={categories}></CategoryMenu>
             </Col>
             <Col md={8}>
               <ul>
                 {posts && posts.map(p => <li key={p.id}> {p.title} </li>)}
               </ul>
-              <Button onClick={() => {}} bsSize="xsmall"><Glyphicon glyph="info-sign"/> information </Button>
-
             </Col>
           </Row>
         </Grid>
