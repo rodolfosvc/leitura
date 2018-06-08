@@ -1,8 +1,11 @@
 import React, { Component } from 'react'
 import { fetchPosts, fetchCategories } from '../actions'
 import { connect } from 'react-redux'
-import { Grid, Row, Col } from 'react-bootstrap'
 import CategoryMenu from './CategoryMenu'
+import Grid from '@material-ui/core/Grid'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
 
 class App extends Component {
 
@@ -14,20 +17,24 @@ class App extends Component {
   render() {
     const { posts, categories } = this.props
     return (
-      <div>
-        <Grid>
-          <Row className="show-grid">
-            <Col md={4}>
+        <Grid container spacing={0}>
+          <Grid item xs={2}>
               <CategoryMenu categories={categories}></CategoryMenu>
-            </Col>
-            <Col md={8}>
-              <ul>
-                {posts && posts.map(p => <li key={p.id}> {p.title} </li>)}
-              </ul>
-            </Col>
-          </Row>
+          </Grid>
+          <Grid item xs={10}>
+            {posts && posts.map(p =>
+              <Card key={p.id}>
+                <CardContent>
+                  <Typography gutterBottom variant="headline" component="h4">
+                    {p.title}
+                  </Typography>
+                  <Typography color="textSecondary">
+                    Author: {p.author}
+                  </Typography>
+                </CardContent>
+              </Card>)}
+          </Grid>
         </Grid>
-      </div>
     );
   }
 }
