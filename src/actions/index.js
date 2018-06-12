@@ -4,6 +4,20 @@ import uuidv4 from 'uuid/v4'
 export const LOAD_POSTS = 'LOAD_POSTS'
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const ADD_POST = 'ADD_POST'
+export const REMOVE_POST = 'REMOVE_POST'
+
+export const removePost = (post) => ({
+  type: REMOVE_POST,
+  post
+})
+
+export const deletePost = (post) => dispatch => {
+  return ServerAPI
+        .deletePost(post)
+        .then( () => {
+          dispatch(removePost(post))
+        })
+}
 
 export const addPost = (post) => ({
   type: ADD_POST,

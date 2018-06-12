@@ -32,7 +32,6 @@ class AddPost extends Component {
   }
 
   handleSave = () => {
-    debugger
     const { post } = this.state
     this.props.savePost(post).then( () => {
       this.setState({ openDialog: false })

@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-import { fetchPosts, fetchCategories } from '../actions'
+import { fetchPosts, fetchCategories, deletePost } from '../actions'
 import { connect } from 'react-redux'
 import CategoryMenu from './CategoryMenu'
 import Grid from '@material-ui/core/Grid'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import { withStyles } from '@material-ui/core/styles'
+import IconButton from '@material-ui/core/IconButton'
+import DeleteIcon from '@material-ui/icons/Delete'
 import SortBy from './SortBy'
 import AddPost from './AddPost'
 
@@ -16,6 +19,13 @@ import AddPost from './AddPost'
 const styles = {
   appBar: {
     background: '#1D272F'
+  },
+  cardActions: {
+	  display: 'flex',
+	  justifyContent: 'flex-end'
+  },
+  sortBy: {
+	  float: 'right'
   }
 };
 
@@ -25,10 +35,15 @@ class App extends Component {
     this.props.loadPosts()
     this.props.loadCategories()
   }
+  
+  handleRemove = post => event => {
+	  const { removePost } = this.props
+	  removePost(post)
+  }
 
   render() {
     const { posts, categories, classes } = this.props
-
+	
     return (
       <div>
         <AppBar position="static" className={classes.appBar}>
@@ -36,7 +51,7 @@ class App extends Component {
             <Typography variant="title" color="inherit">
               Udacity Leitura
             </Typography>
-            <SortBy></SortBy>
+            <SortBy style={classes.sortBy}></SortBy>
             <AddPost></AddPost>
           </Toolbar>
         </AppBar>
@@ -55,6 +70,16 @@ class App extends Component {
                     Author: {p.author}
                   </Typography>
                 </CardContent>
+				<CardActions className={classes.cardActions}>
+					<IconButton
+					  aria-owns={null}
+					  aria-haspopup="false"
+					  onClick={this.handleRemove(p)}
+					  color="inherit"
+					>
+						<DeleteIcon/>
+					</IconButton>
+				</CardActions>
               </Card>)}
           </Grid>
         </Grid>
@@ -70,7 +95,8 @@ function mapStateToProps ({posts, categories }) {
 function mapDispatchToProps (dispatch) {
   return {
     loadPosts: () => dispatch(fetchPosts()),
-    loadCategories: () => dispatch(fetchCategories())
+    loadCategories: () => dispatch(fetchCategories()),
+	removePost: (post) => dispatch(deletePost(post))
   }
 }
 

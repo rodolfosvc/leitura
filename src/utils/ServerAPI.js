@@ -30,12 +30,12 @@ export const getAllPosts = () =>
     body: JSON.stringify(post)
   }).then(res => res.json())
 
-/*export const remove = (contact) =>
-  fetch(`${api}/contacts/${contact.id}`, { method: 'DELETE', headers })
+export const deletePost = (post) =>
+  fetch(`${api}/posts/${post.id}`, { method: 'DELETE', headers })
     .then(res => res.json())
-    .then(data => data.contact)
+    .then(data => data.post)
 
-export const create = (body) =>
+/*export const create = (body) =>
   fetch(`${api}/contacts`, {
     method: 'POST',
     headers: {

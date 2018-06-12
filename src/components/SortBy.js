@@ -21,10 +21,10 @@ class SortBy extends Component {
   render() {
 
     const { sortByElem } = this.state
-    const openMenu = Boolean(sortByElem);
-
+	const { style } = this.props
+    const openMenu = Boolean(sortByElem)
     return (
-      <div>
+      <div className={style}>
         <IconButton
               aria-owns={openMenu ? 'sortBy' : null}
               aria-haspopup="true"
