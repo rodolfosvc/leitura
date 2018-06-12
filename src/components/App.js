@@ -10,6 +10,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import { withStyles } from '@material-ui/core/styles'
 import SortBy from './SortBy'
+import AddPost from './AddPost'
 
 
 const styles = {
@@ -36,10 +37,11 @@ class App extends Component {
               Udacity Leitura
             </Typography>
             <SortBy></SortBy>
+            <AddPost></AddPost>
           </Toolbar>
         </AppBar>
         <Grid container spacing={0}>
-          <Grid item xs={2}>
+          <Grid item xs={2} className={classes.navGrid}>
               <CategoryMenu categories={categories}></CategoryMenu>
           </Grid>
           <Grid item xs={10}>
