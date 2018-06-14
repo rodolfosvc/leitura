@@ -1,0 +1,64 @@
+import React from 'react'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import TextField from '@material-ui/core/TextField'
+import MaterialUISelect from './MaterialUISelect'
+import Button from '@material-ui/core/Button'
+
+const PostModal = ({open, post, handleClose, handleSave, handleChange}) => {
+  return (
+    <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="addPostDialog"
+      >
+        <DialogTitle id="addPostDialog">{ `Title: ${post.title} `}</DialogTitle>
+        <DialogContent>
+          <MaterialUISelect post={post} onChange={handleChange('category')}></MaterialUISelect>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="title"
+            label="Title"
+            type="text"
+            value={post.title}
+            onChange={handleChange('title')}
+            fullWidth
+          />
+          <TextField
+            margin="dense"
+            id="author"
+            label="Author"
+            type="text"
+            value={post.author}
+            onChange={handleChange('author')}
+            fullWidth
+          />
+          <TextField
+            id="body"
+            label="Body"
+            multiline
+            rowsMax="4"
+            value={post.body}
+            onChange={handleChange('body')}
+            margin="normal"
+            fullWidth
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleSave} color="primary">
+            {(post && post.id) ? 'Edit' : 'Add'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  )
+}
+
+export default PostModal

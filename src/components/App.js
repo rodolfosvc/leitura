@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fetchPosts, fetchCategories, deletePost } from '../actions'
+import { fetchPosts, fetchCategories, deletePost, savePost, updatePost } from '../actions'
 import { connect } from 'react-redux'
 import CategoryMenu from './CategoryMenu'
 import Grid from '@material-ui/core/Grid'
@@ -12,9 +12,10 @@ import Toolbar from '@material-ui/core/Toolbar'
 import { withStyles } from '@material-ui/core/styles'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
+import EditIcon from '@material-ui/icons/Edit'
+import Button from '@material-ui/core/Button'
 import SortBy from './SortBy'
-import AddPost from './AddPost'
-
+import PostModal from './PostModal'
 
 const styles = {
   appBar: {
@@ -29,21 +30,77 @@ const styles = {
   }
 };
 
+const defaultPostModal = {
+  title: 'New Post',
+  category: '',
+  author: '',
+  body: ''
+}
+
 class App extends Component {
+
+  state = {
+    openModalPost: false,
+    postModal: defaultPostModal
+  }
 
   componentDidMount(){
     this.props.loadPosts()
     this.props.loadCategories()
   }
-  
-  handleRemove = post => event => {
+
+  handleRemove = post => {
 	  const { removePost } = this.props
 	  removePost(post)
   }
 
+  handleOpenPostModal = post => {
+    if(post && post.id){
+      this.setState({
+        openModalPost: true,
+        postModal: post
+      })
+    }else{
+      this.setState({
+        openModalPost: true,
+        postModal: defaultPostModal
+      })
+    }
+  }
+
+  handleClosePostModal = () => {
+    this.setState({
+      openModalPost: false,
+      postModal: defaultPostModal
+    })
+  }
+
+  handleSavePostModal = () => {
+    const { postModal } = this.state
+    if(postModal && postModal.id){
+      this.props.updatePost(postModal).then( () => {
+        this.handleClosePostModal()
+      })
+    }else{
+      this.props.savePost(postModal).then( () => {
+        this.handleClosePostModal()
+      })
+    }
+  }
+
+  handlePostModalPropChange = propName => event => {
+    const { postModal } = this.state
+    this.setState({
+      postModal: {
+        ...postModal,
+        [propName]: event.target.value,
+      }
+    })
+  }
+
   render() {
+    const { openModalPost, postModal } = this.state
     const { posts, categories, classes } = this.props
-	
     return (
       <div>
         <AppBar position="static" className={classes.appBar}>
@@ -52,9 +109,17 @@ class App extends Component {
               Udacity Leitura
             </Typography>
             <SortBy style={classes.sortBy}></SortBy>
-            <AddPost></AddPost>
+            <Button color="inherit" onClick={this.handleOpenPostModal}>Add post</Button>
           </Toolbar>
         </AppBar>
+        <PostModal
+              open={openModalPost}
+              post={postModal}
+              handleClose={this.handleClosePostModal}
+              handleSave={this.handleSavePostModal}
+              handleChange={this.handlePostModalPropChange}
+              >
+            </PostModal>
         <Grid container spacing={0}>
           <Grid item xs={2} className={classes.navGrid}>
               <CategoryMenu categories={categories}></CategoryMenu>
@@ -71,10 +136,18 @@ class App extends Component {
                   </Typography>
                 </CardContent>
 				<CardActions className={classes.cardActions}>
+          <IconButton
+            aria-owns={null}
+            aria-haspopup="false"
+            onClick={() => this.handleOpenPostModal(p)}
+            color="inherit"
+          >
+            <EditIcon/>
+          </IconButton>
 					<IconButton
 					  aria-owns={null}
 					  aria-haspopup="false"
-					  onClick={this.handleRemove(p)}
+					  onClick={() => this.handleRemove(p)}
 					  color="inherit"
 					>
 						<DeleteIcon/>
@@ -96,7 +169,9 @@ function mapDispatchToProps (dispatch) {
   return {
     loadPosts: () => dispatch(fetchPosts()),
     loadCategories: () => dispatch(fetchCategories()),
-	removePost: (post) => dispatch(deletePost(post))
+    removePost: (post) => dispatch(deletePost(post)),
+    savePost: (post) => dispatch(savePost(post)),
+    updatePost: (post) => dispatch(updatePost(post))
   }
 }
 

@@ -26,27 +26,23 @@ class MaterialUISelect extends Component {
     this.setState({ open: false })
   }
 
-  changeCategorie = event => {
-      this.props.post.categorie = event.target.value;
-  }
-
   render() {
 
     const { open } = this.state
-    const { post , classes, categories } = this.props
+    const { post , classes, categories, onChange } = this.props
 
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="categorieSelect">Categorie</InputLabel>
+        <InputLabel htmlFor="categorySelect">Categorie</InputLabel>
         <Select
           open={open}
           onClose={this.handleClose}
           onOpen={this.handleOpen}
-          value={post.categorie}
-          onChange={this.changeCategorie}
+          value={post.category}
+          onChange={onChange}
           inputProps={{
-            name: 'categorie',
-            id: 'categorieSelect',
+            name: 'category',
+            id: 'categorySelect',
           }}
         >
           <MenuItem value="">

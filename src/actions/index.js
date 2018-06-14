@@ -5,6 +5,7 @@ export const LOAD_POSTS = 'LOAD_POSTS'
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
+export const EDIT_POST = 'EDIT_POST'
 
 export const removePost = (post) => ({
   type: REMOVE_POST,
@@ -34,6 +35,19 @@ export const savePost = (post) => dispatch => {
         .createPost(newPost)
         .then( data => {
           dispatch(addPost(data))
+        })
+}
+
+export const editPost = (post) => ({
+  type: EDIT_POST,
+  post
+})
+
+export const updatePost = (post) => dispatch => {
+  return ServerAPI
+        .updatePost(post)
+        .then( data => {
+          dispatch(editPost(data))
         })
 }
 
