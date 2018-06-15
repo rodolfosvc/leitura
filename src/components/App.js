@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fetchCategories, savePost, updatePost } from '../actions'
+import { fetchCategories, fetchPosts, savePost, updatePost } from '../actions'
 import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import CategoryMenu from './CategoryMenu'
@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button'
 import SortBy from './SortBy'
 import PostModal from './PostModal'
 import PostList from './PostList'
+import PostDetails from './PostDetails'
 
 const styles = {
   appBar: {
@@ -38,6 +39,7 @@ class App extends Component {
 
   componentDidMount(){
     this.props.loadCategories()
+	this.props.loadPosts()
   }
 
   handleOpenPostModal = post => {
@@ -57,7 +59,6 @@ class App extends Component {
   handleClosePostModal = () => {
     this.setState({
       openModalPost: false,
-      postModal: defaultPostModal
     })
   }
 
@@ -112,8 +113,11 @@ class App extends Component {
                 <CategoryMenu categories={categories}></CategoryMenu>
             </Grid>
             <Grid item xs={10}>
-              <Route path='/:category' render={({match})=> {
+              <Route exact path='/:category' render={({match})=> {
                 return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
+              }}/>
+			  <Route path='/:category/:postId' render={({match})=> {
+                return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
               }}/>
             </Grid>
           </Grid>
@@ -129,6 +133,7 @@ function mapStateToProps ({ categories }) {
 
 function mapDispatchToProps (dispatch) {
   return {
+	loadPosts: () => dispatch(fetchPosts()),
     loadCategories: () => dispatch(fetchCategories()),
     savePost: (post) => dispatch(savePost(post)),
     updatePost: (post) => dispatch(updatePost(post))
