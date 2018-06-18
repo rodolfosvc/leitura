@@ -6,6 +6,20 @@ export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const EDIT_POST = 'EDIT_POST'
+export const LOAD_POST_COMMENTS = 'LOAD_POST_COMMENTS'
+
+export const loadPostComments = (comments) => ({
+  type: LOAD_POST_COMMENTS,
+  comments
+})
+
+export const getPostComments = (post) => dispatch => {
+  return ServerAPI
+        .getPostComments(post)
+        .then( (comments) => {
+          dispatch(loadPostComments(comments))
+        })
+}
 
 export const removePost = (post) => ({
   type: REMOVE_POST,

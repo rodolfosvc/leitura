@@ -39,7 +39,7 @@ class App extends Component {
 
   componentDidMount(){
     this.props.loadCategories()
-	this.props.loadPosts()
+    this.props.loadPosts()
   }
 
   handleOpenPostModal = post => {
@@ -114,10 +114,10 @@ class App extends Component {
             </Grid>
             <Grid item xs={10}>
               <Route exact path='/:category' render={({match})=> {
-                return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
+              return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
               }}/>
-			  <Route path='/:category/:postId' render={({match})=> {
-                return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
+              <Route path='/:category/:postId' render={({match})=> {
+              return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
               }}/>
             </Grid>
           </Grid>
@@ -133,7 +133,7 @@ function mapStateToProps ({ categories }) {
 
 function mapDispatchToProps (dispatch) {
   return {
-	loadPosts: () => dispatch(fetchPosts()),
+    loadPosts: () => dispatch(fetchPosts()),
     loadCategories: () => dispatch(fetchCategories()),
     savePost: (post) => dispatch(savePost(post)),
     updatePost: (post) => dispatch(updatePost(post))

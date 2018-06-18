@@ -45,6 +45,12 @@ export const deletePost = (post) =>
     body: JSON.stringify(post)
   }).then(res => res.json())
 
+export const getPostComments = (post) =>
+  fetch(`${api}/posts/${post.id}/comments`, { headers })
+    .then(res => res.json())
+    .then(data => data)
+
+
 /*export const create = (body) =>
   fetch(`${api}/contacts`, {
     method: 'POST',

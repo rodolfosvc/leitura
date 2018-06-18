@@ -11,7 +11,7 @@ class PostList extends Component {
     return (
       <div>
         {posts && posts.map(p => <Post key={p.id} handleOpenPostModal={handleOpenPostModal} path={path} post={p}></Post>)}
-	  </div>
+      </div>
     )
   }
 }
