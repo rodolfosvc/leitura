@@ -25,24 +25,31 @@ class Comment extends Component {
     editting: false
   }
 
-  handleEdit = () => {
+  handleEdit = (comment, onClickEdit) => {
+	onClickEdit(comment)
     this.setState({editting: true})
   }
 
-  handleSave = () => {
+  handleSaveChanges = (comment, handleUpdate) => {
+	handleUpdate(comment)
     this.setState({editting: false})
   }
 
-  handleCancel = () => {
+  handleCancelUpdate = () => {
     this.setState({editting: false})
   }
-
-
+  
   render(){
 
-    const { comment, classes } = this.props
+    const { comment, classes, isAdd, handleChange } = this.props
+	let { handleSave, handleCancel } = this.props
     const { editting } = this.state
-
+	
+	if(!handleCancel)
+		handleCancel = this.handleCancelUpdate
+	if(!handleSave)
+		handleSave = this.handleSaveChanges
+	
     return (
       <div>
         {comment && <Card key={comment.id}>
@@ -52,9 +59,9 @@ class Comment extends Component {
             label="Body"
             multiline
             rowsMax="10"
-            disabled={!editting}
+            disabled={!isAdd && !editting}
             value={comment.body}
-            onChange={ () => {} /*handleChange('body')*/}
+            onChange={ handleChange('body') }
             margin="normal"
             fullWidth
           />
@@ -63,9 +70,9 @@ class Comment extends Component {
             </Typography>
           </CardContent>
           <CardActions className={classes.cardActions}>
-            {editting && <Button color="inherit" onClick={this.handleSave}> Save </Button> }
-            {editting && <Button color="inherit" onClick={this.handleCancel}> Cancel </Button> }
-            {!editting &&
+            {(isAdd || editting) && <Button color="inherit" onClick={handleSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
+            {(isAdd || editting) && <Button color="inherit" onClick={handleCancel}> Cancel </Button> }
+            {!isAdd && !editting &&
               <Tooltip id="tooltip-detail" title="Edit">
                 <IconButton
                 aria-owns={null}
@@ -76,16 +83,17 @@ class Comment extends Component {
                   <EditIcon/>
                 </IconButton>
               </Tooltip>}
-            <Tooltip id="tooltip-detail" title="Delete">
-              <IconButton
-              aria-owns={null}
-              aria-haspopup="false"
-              onClick={() => {}}
-              color="inherit"
-              >
-                <DeleteIcon/>
-              </IconButton>
-            </Tooltip>
+			{!isAdd && 
+				<Tooltip id="tooltip-detail" title="Delete">
+				  <IconButton
+				  aria-owns={null}
+				  aria-haspopup="false"
+				  onClick={() => {}}
+				  color="inherit"
+				  >
+					<DeleteIcon/>
+				  </IconButton>
+				</Tooltip>}
           </CardActions>
         </Card>}
       </div>
