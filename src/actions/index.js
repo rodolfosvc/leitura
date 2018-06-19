@@ -7,15 +7,62 @@ export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const EDIT_POST = 'EDIT_POST'
 export const LOAD_POST_COMMENTS = 'LOAD_POST_COMMENTS'
+export const ADD_COMMENT = 'ADD_COMMENT'
+export const DELETE_COMMENT = 'DELETE_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
+
+export const editComment = (comment) => ({
+  type: EDIT_COMMENT,
+  comment
+})
+
+export const updateComment = (comment) => dispatch => {
+  return ServerAPI
+        .updateComment(comment)
+        .then( data => {
+          dispatch(editComment(data))
+        })
+}
+
+export const removeComment = (comment) => ({
+  type: DELETE_COMMENT,
+  comment
+})
+
+export const deleteComment = (comment) => dispatch => {
+  return ServerAPI
+        .deleteComment(comment)
+        .then( () => {
+          dispatch(removeComment(comment))
+        })
+}
+
+export const addComment = (comment) => ({
+  type: ADD_COMMENT,
+  comment
+})
+
+export const saveComment = (comment) => dispatch => {
+  const newComment = {
+    ...comment,
+    id: uuidv4(),
+    timestamp: Date.now()
+  }
+  return ServerAPI
+        .createComment(newComment)
+        .then( data => {
+          dispatch(addComment(data))
+        })
+}
 
 export const loadPostComments = (comments) => ({
   type: LOAD_POST_COMMENTS,
   comments
 })
 
-export const getPostComments = (post) => dispatch => {
+export const getPostComments = (postId) => dispatch => {
   return ServerAPI
-        .getPostComments(post)
+        .getPostComments(postId)
         .then( (comments) => {
           dispatch(loadPostComments(comments))
         })

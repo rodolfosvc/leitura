@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import { getPostComments } from '../../actions'
 import Comment from './Comment'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
@@ -28,88 +27,47 @@ const defaultComment = {
 }
 
 class CommentsList extends Component {
-	
+
   state = {
-	showAddComment: false,
-    comment: defaultComment
-  }
-  
-  handleAddComment = () => {
-	debugger
-	this.setState({
-		showAddComment: true,
-		comment: defaultComment
-	})
+    showAddComment: false
   }
 
-  handleSaveComment = () => {
-	debugger
-    const { comment } = this.state
-	//dispatch action to add new comment
-	this.setState({showAddComment: false})
+  showAddCommentElem = () => {
+    this.setState({ showAddComment: true	})
   }
 
-  handleCancelSaveComment = () => {
-	debugger
-	this.setState({showAddComment: false})
-  }
-  
-  handleEdit = (comment) => {
-	  this.setState({comment})
-  }
-  
-  handleSaveEdition = (comment) => {
-	  //dispatch action to update comment
-  }
-  
-  handleCommentPropChange = propName => event => {
-    const { comment } = this.state
-    this.setState({
-      comment: {
-        ...comment,
-        [propName]: event.target.value,
-      }
-    })
-  }
-
-  componentDidMount() {
-    const { loadComments, post } = this.props
-    post && loadComments(post)
+  hideAddCommentElem = () => {
+    this.setState({showAddComment: false})
   }
 
   render(){
 
-    const { comments, classes } = this.props
-	const { showAddComment, comment } = this.state
+    const { comments, classes, postParentId } = this.props
+    const { showAddComment } = this.state
 
     return (
       <div className={classes.comment}>
-		<AppBar position="static" className={classes.commentsBar}>
+        <AppBar position="static" className={classes.commentsBar}>
           <Toolbar>
             <Typography variant="title" color="inherit">
-              Comments
+            Comments
             </Typography>
             <SortBy/>
-            <Button color="inherit" onClick={this.handleAddComment}>Add comment</Button>
+            <Button color="inherit" onClick={this.showAddCommentElem}>Add comment</Button>
           </Toolbar>
         </AppBar>
-        {showAddComment && 
-			<Comment 
-			key='newComment' 
-			comment={comment}
-			handleSave={this.handleSaveComment}
-			handleCancel={this.handleCancelSaveComment}
-			handleChange={this.handleCommentPropChange}
-			isAdd={true}
-			/>}
-        { comments && comments.map( com =>
-            <Comment 
-			key={com.id} 
-			comment={com}
-			handleSaveChanges={this.handleSaveChanges}
-			handleCancelUpdate={this.handleCancelUpdate}
-			handleChange={this.handleCommentPropChange}
-			isAdd={false}/>
+        {showAddComment &&
+    			<Comment
+    			key='newComment'
+    			comment={{...defaultComment, parentId: postParentId}}
+          afterSaveOrCancel={this.hideAddCommentElem}
+    			isAdd={true}
+    			/>}
+        {comments && comments.map( comment =>
+            <Comment
+        			key={comment.id}
+        			comment={comment}
+        			isAdd={false}/>
           )
         }
       </div>
@@ -121,13 +79,6 @@ function mapStateToProps ({ comments }) {
   return { comments }
 }
 
-function mapDispatchToProps (dispatch) {
-  return {
-    loadComments: (post) => dispatch(getPostComments(post)),
-  }
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  mapStateToProps
 )(withStyles(styles)(CommentsList))

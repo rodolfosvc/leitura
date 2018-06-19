@@ -28,7 +28,7 @@ class Post extends Component {
 
   render() {
 
-    const { post, path, classes, handleOpenPostModal} = this.props
+    const { post, path, classes, handleOpenPostModal } = this.props
 
     return (
       <div>

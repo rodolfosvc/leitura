@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/Edit'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
+import { saveComment, deleteComment, updateComment } from '../../actions'
 
 const styles = {
   cardActions: {
@@ -22,34 +23,59 @@ const styles = {
 class Comment extends Component {
 
   state = {
-    editting: false
+    editting: false,
+    comment: this.props.comment
   }
 
-  handleEdit = (comment, onClickEdit) => {
-	onClickEdit(comment)
+  onClickEdit = () => {
     this.setState({editting: true})
   }
 
-  handleSaveChanges = (comment, handleUpdate) => {
-	handleUpdate(comment)
+  onClickSave = () => {
+    const { comment } = this.state
+    const { isAdd, afterSaveOrCancel } = this.props
+    if(isAdd){
+      //dispatch add new comment
+      this.props.dispatch(saveComment(comment))
+    }else{
+      //dispatch update comment
+      this.props.dispatch(updateComment(comment))
+    }
+
+    if(afterSaveOrCancel)
+      afterSaveOrCancel()
+
     this.setState({editting: false})
   }
 
-  handleCancelUpdate = () => {
-    this.setState({editting: false})
+  onClickCancel = () => {
+    const { afterSaveOrCancel, comment } = this.props
+    if(afterSaveOrCancel)
+      afterSaveOrCancel()
+    this.setState({ comment, editting: false})
   }
-  
+
+  onClickDelete = () => {
+    const { comment } = this.state
+    //dispatch delete comment
+    this.props.dispatch(deleteComment(comment))
+  }
+
+  handleChange = propName => event => {
+    const { comment } = this.state
+    this.setState({
+      comment: {
+        ...comment,
+        [propName]: event.target.value,
+      }
+    })
+  }
+
   render(){
 
-    const { comment, classes, isAdd, handleChange } = this.props
-	let { handleSave, handleCancel } = this.props
-    const { editting } = this.state
-	
-	if(!handleCancel)
-		handleCancel = this.handleCancelUpdate
-	if(!handleSave)
-		handleSave = this.handleSaveChanges
-	
+    const { classes, isAdd } = this.props
+    const { comment, editting } = this.state
+
     return (
       <div>
         {comment && <Card key={comment.id}>
@@ -61,7 +87,7 @@ class Comment extends Component {
             rowsMax="10"
             disabled={!isAdd && !editting}
             value={comment.body}
-            onChange={ handleChange('body') }
+            onChange={ this.handleChange('body') }
             margin="normal"
             fullWidth
           />
@@ -70,35 +96,36 @@ class Comment extends Component {
             </Typography>
           </CardContent>
           <CardActions className={classes.cardActions}>
-            {(isAdd || editting) && <Button color="inherit" onClick={handleSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
-            {(isAdd || editting) && <Button color="inherit" onClick={handleCancel}> Cancel </Button> }
+            {(isAdd || editting) && <Button color="inherit" onClick={this.onClickSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
+            {(isAdd || editting) && <Button color="inherit" onClick={this.onClickCancel}> Cancel </Button> }
             {!isAdd && !editting &&
               <Tooltip id="tooltip-detail" title="Edit">
                 <IconButton
                 aria-owns={null}
                 aria-haspopup="false"
-                onClick={this.handleEdit}
+                onClick={this.onClickEdit}
                 color="inherit"
                 >
                   <EditIcon/>
                 </IconButton>
               </Tooltip>}
-			{!isAdd && 
-				<Tooltip id="tooltip-detail" title="Delete">
-				  <IconButton
-				  aria-owns={null}
-				  aria-haspopup="false"
-				  onClick={() => {}}
-				  color="inherit"
-				  >
-					<DeleteIcon/>
-				  </IconButton>
-				</Tooltip>}
+            {!isAdd && !editting &&
+              <Tooltip id="tooltip-detail" title="Delete">
+                <IconButton
+                aria-owns={null}
+                aria-haspopup="false"
+                onClick={this.onClickDelete}
+                color="inherit"
+                >
+                  <DeleteIcon/>
+                </IconButton>
+              </Tooltip>}
           </CardActions>
         </Card>}
       </div>
     )
   }
 }
+
 
 export default connect()(withStyles(styles)(Comment))
