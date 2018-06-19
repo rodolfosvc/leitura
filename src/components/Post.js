@@ -12,6 +12,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import Tooltip from '@material-ui/core/Tooltip'
+import PropTypes from 'prop-types'
 
 const styles = {
   cardActions: {
@@ -81,6 +82,12 @@ class Post extends Component {
       </div>
     )
   }
+}
+
+Post.propTypes = {
+	path: PropTypes.string,
+	post: PropTypes.object.isRequired,
+	handleOpenPostModal: PropTypes.func.isRequired
 }
 
 export default connect()(withStyles(styles)(Post))

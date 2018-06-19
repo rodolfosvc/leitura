@@ -3,6 +3,7 @@ import SortIcon from '@material-ui/icons/Sort'
 import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
+import PropTypes from 'prop-types'
 
 class SortBy extends Component {
 
@@ -53,6 +54,10 @@ class SortBy extends Component {
       </div>
     )
   }
+}
+
+SortBy.propTypes = {
+	style: PropTypes.string
 }
 
 export default SortBy

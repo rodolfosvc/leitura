@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import Post from './Post'
+import PropTypes from 'prop-types'
 
-class PostList extends Component {
-
-  render() {
-
-    const { posts, path, handleOpenPostModal} = this.props
-
+const PostList = ({ posts, path, handleOpenPostModal}) => {
     return (
       <div>
         {posts && posts.map(p => <Post key={p.id} handleOpenPostModal={handleOpenPostModal} path={path} post={p}></Post>)}
       </div>
     )
-  }
 }
 
 function mapStateToProps ({posts}, ownProps) {
   return { posts: posts.filter(p => ownProps.path === "home" || p.category === ownProps.path)}
+}
+
+PostList.propTypes = {
+	path: PropTypes.string.isRequired,
+	handleOpenPostModal: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps)(PostList)

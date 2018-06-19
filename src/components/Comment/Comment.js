@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
 import { saveComment, deleteComment, updateComment } from '../../actions'
+import PropTypes from 'prop-types'
 
 const styles = {
   cardActions: {
@@ -24,7 +25,7 @@ class Comment extends Component {
 
   state = {
     editting: false,
-    comment: this.props.comment
+    comment: this.props.initValue
   }
 
   onClickEdit = () => {
@@ -49,10 +50,10 @@ class Comment extends Component {
   }
 
   onClickCancel = () => {
-    const { afterSaveOrCancel, comment } = this.props
+    const { afterSaveOrCancel, initValue } = this.props
     if(afterSaveOrCancel)
       afterSaveOrCancel()
-    this.setState({ comment, editting: false})
+    this.setState({ comment: initValue, editting: false})
   }
 
   onClickDelete = () => {
@@ -127,5 +128,10 @@ class Comment extends Component {
   }
 }
 
+Comment.propTypes = {
+	isAdd: PropTypes.bool.isRequired,
+	initValue: PropTypes.object.isRequired,
+	afterSaveOrCancel: PropTypes.func
+}
 
 export default connect()(withStyles(styles)(Comment))

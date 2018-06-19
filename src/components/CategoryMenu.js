@@ -7,6 +7,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
 import Collapse from '@material-ui/core/Collapse'
 import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 
  const styles = theme => ({
     nested: {
@@ -47,6 +48,10 @@ class CategoryMenu extends Component{
       </MenuList>
     )
   }
+}
+
+CategoryMenu.propTypes = {
+	categories: PropTypes.array.isRequired
 }
 
 export default withStyles(styles)(CategoryMenu)

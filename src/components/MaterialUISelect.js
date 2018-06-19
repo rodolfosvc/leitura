@@ -5,6 +5,7 @@ import InputLabel from '@material-ui/core/InputLabel'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import PropTypes from 'prop-types'
 
 const styles = {
   formControl: {
@@ -61,5 +62,10 @@ class MaterialUISelect extends Component {
   function mapStateToProps ({categories }) {
     return { categories }
   }
+  
+  MaterialUISelect.propTypes = {
+	post: PropTypes.object.isRequired,
+	onChange: PropTypes.func.isRequired
+}
 
 export default connect(mapStateToProps)(withStyles(styles)(MaterialUISelect))

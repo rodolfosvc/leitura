@@ -7,6 +7,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import SortBy from '../SortBy'
 import Button from '@material-ui/core/Button'
+import PropTypes from 'prop-types'
 
 const styles = theme => ({
   comment: {
@@ -59,14 +60,14 @@ class CommentsList extends Component {
         {showAddComment &&
     			<Comment
     			key='newComment'
-    			comment={{...defaultComment, parentId: postParentId}}
+    			initValue={{...defaultComment, parentId: postParentId}}
           afterSaveOrCancel={this.hideAddCommentElem}
     			isAdd={true}
     			/>}
         {comments && comments.map( comment =>
             <Comment
         			key={comment.id}
-        			comment={comment}
+        			initValue={comment}
         			isAdd={false}/>
           )
         }
@@ -77,6 +78,10 @@ class CommentsList extends Component {
 
 function mapStateToProps ({ comments }) {
   return { comments }
+}
+
+CommentsList.propTypes = {
+	postParentId: PropTypes.string.isRequired
 }
 
 export default connect(

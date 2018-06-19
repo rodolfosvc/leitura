@@ -4,7 +4,7 @@ import Post from './Post'
 import CommentsList from './Comment/CommentsList'
 import Divider from '@material-ui/core/Divider'
 import { getPostComments } from '../actions'
-
+import PropTypes from 'prop-types'
 
 class PostDetails extends Component {
 
@@ -35,6 +35,11 @@ function mapDispatchToProps (dispatch) {
   return {
     loadComments: (postId) => dispatch(getPostComments(postId)),
   }
+}
+
+PostDetails.propTypes = {
+	postId: PropTypes.string.isRequired,
+	handleOpenPostModal: PropTypes.func.isRequired
 }
 
 export default connect(

@@ -6,6 +6,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import MaterialUISelect from './MaterialUISelect'
 import Button from '@material-ui/core/Button'
+import PropTypes from 'prop-types'
 
 const PostModal = ({open, post, handleClose, handleSave, handleChange}) => {
   return (
@@ -59,6 +60,14 @@ const PostModal = ({open, post, handleClose, handleSave, handleChange}) => {
       </Dialog>
     </div>
   )
+}
+
+PostModal.propTypes = {
+	open: PropTypes.bool.isRequired,
+	post: PropTypes.object.isRequired,
+	handleClose: PropTypes.func.isRequired,
+	handleSave: PropTypes.func.isRequired,
+	handleChange: PropTypes.func.isRequired
 }
 
 export default PostModal
