@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { deletePost } from '../actions'
+import { deletePost, updatePostVoteScore } from '../actions'
 import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -13,6 +13,8 @@ import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
 import Tooltip from '@material-ui/core/Tooltip'
 import PropTypes from 'prop-types'
+import Grid from '@material-ui/core/Grid'
+import VoteScore from './VoteScore'
 
 const styles = {
   cardActions: {
@@ -25,6 +27,11 @@ class Post extends Component {
 
   handleRemove = post => {
     this.props.dispatch(deletePost(post))
+  }
+
+  clickVoteScore = (option) => {
+    const { post } = this.props
+    this.props.dispatch(updatePostVoteScore(post, option))
   }
 
   render() {
@@ -42,41 +49,48 @@ class Post extends Component {
     				  Author: {post.author}
     			  </Typography>
     			</CardContent>
-    			<CardActions className={classes.cardActions}>
-    				{path &&
-                        <Tooltip id="tooltip-detail" title="Details">
-        					<IconButton
-        					aria-owns={null}
-        					aria-haspopup="false"
-                            aria-label="Details"
-        					component={Link}
-        					to={`/${path}/${post.id}`}
-        					color="inherit"
-        					>
-        						<VisibilityIcon/>
-        					</IconButton>
-                        </Tooltip>}
-                    <Tooltip id="tooltip-detail" title="Edit">
-                        <IconButton
-                        aria-owns={null}
-                        aria-haspopup="false"
-                        onClick={() => handleOpenPostModal(post)}
-                        color="inherit"
-                        >
-                            <EditIcon/>
-                        </IconButton>
-                    </Tooltip>
-    			  {path &&
-                    <Tooltip id="tooltip-detail" title="Delete">
-                        <IconButton
-                        aria-owns={null}
-                        aria-haspopup="false"
-                        onClick={() => this.handleRemove(post)}
-                        color="inherit"
-                        >
-                            <DeleteIcon/>
-                        </IconButton>
-                    </Tooltip>}
+    			<CardActions>
+                    <Grid container spacing={0}>
+                        <Grid item xs={6}>
+                            <VoteScore voteFunc={this.clickVoteScore} elem={post}/>
+                        </Grid>
+                        <Grid item xs={6} className={classes.cardActions}>
+            				{path &&
+                                <Tooltip id="tooltip-detail" title="Details">
+                					<IconButton
+                					aria-owns={null}
+                					aria-haspopup="false"
+                                    aria-label="Details"
+                					component={Link}
+                					to={`/${path}/${post.id}`}
+                					color="inherit"
+                					>
+                						<VisibilityIcon/>
+                					</IconButton>
+                                </Tooltip>}
+                            <Tooltip id="tooltip-detail" title="Edit">
+                                <IconButton
+                                aria-owns={null}
+                                aria-haspopup="false"
+                                onClick={() => handleOpenPostModal(post)}
+                                color="inherit"
+                                >
+                                    <EditIcon/>
+                                </IconButton>
+                            </Tooltip>
+            			  {path &&
+                            <Tooltip id="tooltip-detail" title="Delete">
+                                <IconButton
+                                aria-owns={null}
+                                aria-haspopup="false"
+                                onClick={() => this.handleRemove(post)}
+                                color="inherit"
+                                >
+                                    <DeleteIcon/>
+                                </IconButton>
+                            </Tooltip>}
+                        </Grid>
+                    </Grid>
     			</CardActions>
   		  </Card>}
       </div>

@@ -1,10 +1,5 @@
 const api = 'http://localhost:3001'
 
-/*let token = localStorage.token
-
-if (!token)
-  token = localStorage.token = Math.random().toString(36).substr(-8)*/
-
 const headers = {
   'Accept': 'application/json',
   'Authorization': 'leituraProject'
@@ -20,7 +15,7 @@ export const getAllPosts = () =>
     .then(res => res.json())
     .then(data => data)
 
- export const createPost = (post) =>
+export const createPost = (post) =>
   fetch(`${api}/posts`, {
     method: 'POST',
     headers: {
@@ -35,7 +30,7 @@ export const deletePost = (post) =>
     .then(res => res.json())
     .then(data => data.post)
 
- export const updatePost = (post) =>
+export const updatePost = (post) =>
   fetch(`${api}/posts/${post.id}`, {
     method: 'PUT',
     headers: {
@@ -45,12 +40,22 @@ export const deletePost = (post) =>
     body: JSON.stringify(post)
   }).then(res => res.json())
 
+export const VotePost = (post, option) =>
+  fetch(`${api}/posts/${post.id}`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ option })
+  }).then(res => res.json())
+
 export const getPostComments = (postId) =>
   fetch(`${api}/posts/${postId}/comments`, { headers })
     .then(res => res.json())
     .then(data => data)
 
- export const createComment = (comment) =>
+export const createComment = (comment) =>
   fetch(`${api}/comments`, {
     method: 'POST',
     headers: {
@@ -65,7 +70,7 @@ export const deleteComment = (comment) =>
     .then(res => res.json())
     .then(data => data.post)
 
- export const updateComment = (comment) =>
+export const updateComment = (comment) =>
   fetch(`${api}/comments/${comment.id}`, {
     method: 'PUT',
     headers: {
@@ -75,12 +80,12 @@ export const deleteComment = (comment) =>
     body: JSON.stringify(comment)
   }).then(res => res.json())
 
-/*export const create = (body) =>
-  fetch(`${api}/contacts`, {
+export const VoteComment = (comment, option) =>
+  fetch(`${api}/comments/${comment.id}`, {
     method: 'POST',
     headers: {
       ...headers,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(body)
-  }).then(res => res.json())*/
+    body: JSON.stringify({ option })
+  }).then(res => res.json())

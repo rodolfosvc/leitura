@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import { sortComments } from '../../actions'
 import Comment from './Comment'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
@@ -41,6 +42,10 @@ class CommentsList extends Component {
     this.setState({showAddComment: false})
   }
 
+  sortByCommentsFunc = (option) => {
+    this.props.dispatch(sortComments(option))
+  }
+
   render(){
 
     const { comments, classes, postParentId } = this.props
@@ -53,7 +58,7 @@ class CommentsList extends Component {
             <Typography variant="title" color="inherit">
             Comments
             </Typography>
-            <SortBy/>
+            <SortBy sortByFunc={this.sortByCommentsFunc}/>
             <Button color="inherit" onClick={this.showAddCommentElem}>Add comment</Button>
           </Toolbar>
         </AppBar>

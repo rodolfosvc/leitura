@@ -5,6 +5,11 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import PropTypes from 'prop-types'
 
+const sortByOptions = {
+  voteScore: "Vote Score",
+  timestamp: "Data de Criação"
+}
+
 class SortBy extends Component {
 
   state = {
@@ -15,15 +20,19 @@ class SortBy extends Component {
     this.setState({ sortByElem: event.currentTarget });
   }
 
-  handleClose = () => {
+  handleClose = event => {
+    const { sortByFunc } = this.props
+    const option = Object.keys(sortByOptions).find(key => sortByOptions[key] === event.target.textContent)
+    sortByFunc(option)
     this.setState({ sortByElem: null });
   }
 
   render() {
 
     const { sortByElem } = this.state
-	const { style } = this.props
+    const { style } = this.props
     const openMenu = Boolean(sortByElem)
+
     return (
       <div className={style}>
         <IconButton
@@ -48,8 +57,8 @@ class SortBy extends Component {
             open={openMenu}
             onClose={this.handleClose}
           >
-            <MenuItem onClick={this.handleClose}>Vote Score</MenuItem>
-            <MenuItem onClick={this.handleClose}>Data Criação</MenuItem>
+            <MenuItem onClick={this.handleClose}>{sortByOptions.voteScore}</MenuItem>
+            <MenuItem onClick={this.handleClose}>{sortByOptions.timestamp}</MenuItem>
         </Menu>
       </div>
     )
@@ -57,7 +66,8 @@ class SortBy extends Component {
 }
 
 SortBy.propTypes = {
-	style: PropTypes.string
+	style: PropTypes.string,
+  sortByFunc: PropTypes.func.isRequired
 }
 
 export default SortBy

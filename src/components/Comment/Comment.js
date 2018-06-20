@@ -4,15 +4,16 @@ import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardActions from '@material-ui/core/CardActions'
-import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
-import { saveComment, deleteComment, updateComment } from '../../actions'
+import { saveComment, deleteComment, updateComment, updateCommentVoteScore } from '../../actions'
 import PropTypes from 'prop-types'
+import Grid from '@material-ui/core/Grid'
+import VoteScore from '../VoteScore'
 
 const styles = {
   cardActions: {
@@ -72,6 +73,11 @@ class Comment extends Component {
     })
   }
 
+  clickVoteScore = (option) => {
+    const { comment } = this.state
+    this.props.dispatch(updateCommentVoteScore(comment, option))
+  }
+
   render(){
 
     const { classes, isAdd } = this.props
@@ -91,36 +97,50 @@ class Comment extends Component {
             onChange={ this.handleChange('body') }
             margin="normal"
             fullWidth
-          />
-            <Typography color="textSecondary">
-              Author: {comment.author}
-            </Typography>
+            />
+            <TextField
+            id="author"
+            label="Author"
+            disabled={!isAdd && !editting}
+            value={comment.author}
+            onChange={ this.handleChange('author') }
+            margin="normal"
+            fullWidth
+            />
           </CardContent>
           <CardActions className={classes.cardActions}>
-            {(isAdd || editting) && <Button color="inherit" onClick={this.onClickSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
-            {(isAdd || editting) && <Button color="inherit" onClick={this.onClickCancel}> Cancel </Button> }
-            {!isAdd && !editting &&
-              <Tooltip id="tooltip-detail" title="Edit">
-                <IconButton
-                aria-owns={null}
-                aria-haspopup="false"
-                onClick={this.onClickEdit}
-                color="inherit"
-                >
-                  <EditIcon/>
-                </IconButton>
-              </Tooltip>}
-            {!isAdd && !editting &&
-              <Tooltip id="tooltip-detail" title="Delete">
-                <IconButton
-                aria-owns={null}
-                aria-haspopup="false"
-                onClick={this.onClickDelete}
-                color="inherit"
-                >
-                  <DeleteIcon/>
-                </IconButton>
-              </Tooltip>}
+            <Grid container spacing={0}>
+              <Grid item xs={6}>
+                <VoteScore voteFunc={this.clickVoteScore} elem={comment}/>
+              </Grid>
+              <Grid item xs={6}>
+                {(isAdd || editting) && <Button color="inherit" onClick={this.onClickSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
+                {(isAdd || editting) && <Button color="inherit" onClick={this.onClickCancel}> Cancel </Button> }
+                {!isAdd && !editting &&
+                  <Tooltip id="tooltip-detail" title="Edit">
+                    <IconButton
+                    aria-owns={null}
+                    aria-haspopup="false"
+                    onClick={this.onClickEdit}
+                    color="inherit"
+                    >
+                      <EditIcon/>
+                    </IconButton>
+                  </Tooltip>}
+                {!isAdd && !editting &&
+                  <Tooltip id="tooltip-detail" title="Delete">
+                    <IconButton
+                    aria-owns={null}
+                    aria-haspopup="false"
+                    onClick={this.onClickDelete}
+                    color="inherit"
+                    >
+                      <DeleteIcon/>
+                    </IconButton>
+                  </Tooltip>}
+                </Grid>
+            </Grid>
+
           </CardActions>
         </Card>}
       </div>

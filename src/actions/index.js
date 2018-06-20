@@ -10,6 +10,27 @@ export const LOAD_POST_COMMENTS = 'LOAD_POST_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
+export const SORT_POSTS = 'SORT_POSTS'
+export const SORT_COMMENTS = 'SORT_COMMENTS'
+
+export const updateCommentVoteScore = (comment, option) => dispatch => {
+  debugger
+  return ServerAPI
+        .VoteComment(comment, option)
+        .then(data => {
+          dispatch(editComment(data))
+        })
+}
+
+export const sortComments = (option) => ({
+    type: SORT_COMMENTS,
+    option
+})
+
+export const sortPosts = (option) => ({
+    type: SORT_POSTS,
+    option
+})
 
 export const editComment = (comment) => ({
   type: EDIT_COMMENT,
@@ -108,6 +129,14 @@ export const updatePost = (post) => dispatch => {
   return ServerAPI
         .updatePost(post)
         .then( data => {
+          dispatch(editPost(data))
+        })
+}
+
+export const updatePostVoteScore = (post, option) => dispatch => {
+  return ServerAPI
+        .VotePost(post, option)
+        .then(data => {
           dispatch(editPost(data))
         })
 }

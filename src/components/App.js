@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fetchCategories, fetchPosts, savePost, updatePost } from '../actions'
+import { fetchCategories, fetchPosts, savePost, updatePost, sortPosts } from '../actions'
 import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import CategoryMenu from './CategoryMenu'
@@ -40,6 +40,10 @@ class App extends Component {
   componentDidMount(){
     this.props.loadCategories()
     this.props.loadPosts()
+  }
+
+  sortByPostsFunc = (option) => {
+    this.props.sortPostsByOption(option)
   }
 
   handleOpenPostModal = post => {
@@ -96,7 +100,7 @@ class App extends Component {
               <Typography variant="title" color="inherit">
                 Udacity Leitura
               </Typography>
-              <SortBy style={classes.sortBy}></SortBy>
+              <SortBy style={classes.sortBy} sortByFunc={this.sortByPostsFunc}></SortBy>
               <Button color="inherit" onClick={this.handleOpenPostModal}>Add post</Button>
             </Toolbar>
           </AppBar>
@@ -136,7 +140,8 @@ function mapDispatchToProps (dispatch) {
     loadPosts: () => dispatch(fetchPosts()),
     loadCategories: () => dispatch(fetchCategories()),
     savePost: (post) => dispatch(savePost(post)),
-    updatePost: (post) => dispatch(updatePost(post))
+    updatePost: (post) => dispatch(updatePost(post)),
+    sortPostsByOption: (option) => dispatch(sortPosts(option))
   }
 }
 
