@@ -19,7 +19,7 @@ const voteOption = {
     down: 'downVote'
 }
 
-const VoteScore = ({voteFunc, elem, classes}) => {
+const VoteScore = ({voteFunc, voteValue, classes}) => {
   return (
     <Grid container spacing={0}>
       <Grid item>
@@ -50,7 +50,7 @@ const VoteScore = ({voteFunc, elem, classes}) => {
       </Grid>
      <Grid item className={classes.voteScore}>
         <Typography color="textSecondary">
-          {`Vote Score: ${elem.voteScore}`}
+          {`Vote Score: ${voteValue}`}
         </Typography>
       </Grid>
     </Grid>

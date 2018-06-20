@@ -75,14 +75,18 @@ class Comment extends Component {
 
   clickVoteScore = (option) => {
     const { comment } = this.state
+    const { voteScore } = comment
     this.props.dispatch(updateCommentVoteScore(comment, option))
+    if(option === 'upVote')
+      this.setState({comment: {...comment, voteScore: voteScore + 1}})
+    if(option === 'downVote')
+      this.setState({comment: {...comment, voteScore: voteScore - 1}})
   }
 
   render(){
 
     const { classes, isAdd } = this.props
     const { comment, editting } = this.state
-
     return (
       <div>
         {comment && <Card key={comment.id}>
@@ -108,12 +112,12 @@ class Comment extends Component {
             fullWidth
             />
           </CardContent>
-          <CardActions className={classes.cardActions}>
+          <CardActions>
             <Grid container spacing={0}>
-              <Grid item xs={6}>
-                <VoteScore voteFunc={this.clickVoteScore} elem={comment}/>
+               <Grid item xs={6}>
+                {(!isAdd && !editting) && <VoteScore voteFunc={this.clickVoteScore} voteValue={comment.voteScore}/> }
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={6} className={classes.cardActions}>
                 {(isAdd || editting) && <Button color="inherit" onClick={this.onClickSave}> {isAdd? 'Save' : 'Save Changes'} </Button> }
                 {(isAdd || editting) && <Button color="inherit" onClick={this.onClickCancel}> Cancel </Button> }
                 {!isAdd && !editting &&
@@ -138,9 +142,8 @@ class Comment extends Component {
                       <DeleteIcon/>
                     </IconButton>
                   </Tooltip>}
-                </Grid>
+              </Grid>
             </Grid>
-
           </CardActions>
         </Card>}
       </div>

@@ -52,7 +52,7 @@ class Post extends Component {
     			<CardActions>
                     <Grid container spacing={0}>
                         <Grid item xs={6}>
-                            <VoteScore voteFunc={this.clickVoteScore} elem={post}/>
+                            <VoteScore voteFunc={this.clickVoteScore} voteValue={post.voteScore}/>
                         </Grid>
                         <Grid item xs={6} className={classes.cardActions}>
             				{path &&
@@ -100,7 +100,7 @@ class Post extends Component {
 
 Post.propTypes = {
 	path: PropTypes.string,
-	post: PropTypes.object.isRequired,
+	post: PropTypes.object,
 	handleOpenPostModal: PropTypes.func.isRequired
 }
 
