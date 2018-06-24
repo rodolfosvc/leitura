@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { deletePost, updatePostVoteScore } from '../actions'
+import { deletePost, updatePostVoteScore } from '../../actions'
 import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
@@ -14,12 +14,17 @@ import VisibilityIcon from '@material-ui/icons/Visibility'
 import Tooltip from '@material-ui/core/Tooltip'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
-import VoteScore from './VoteScore'
+import VoteScore from '../Utils/VoteScore'
+import { withRouter } from 'react-router-dom'
 
 const styles = {
   cardActions: {
     display: 'flex',
     justifyContent: 'flex-end'
+  },
+  timeStamp: {
+    marginBottom: 16,
+    fontSize: 14
   }
 }
 
@@ -27,6 +32,11 @@ class Post extends Component {
 
   handleRemove = post => {
     this.props.dispatch(deletePost(post))
+        .then(() =>{
+            if (!this.props.path){
+                this.props.history.push('/home')
+            }
+        })
   }
 
   clickVoteScore = (option) => {
@@ -37,11 +47,16 @@ class Post extends Component {
   render() {
 
     const { post, path, classes, handleOpenPostModal } = this.props
+    const postDate = post ? new Date(post.timestamp) : null
+    const formatDate = postDate ?  `${postDate.getDate()}/${postDate.getMonth() + 1/* Janeiro = 0 */}/${postDate.getFullYear()}` : null
 
     return (
       <div>
   		  {post && <Card key={post.id}>
     			<CardContent>
+                  <Typography className={classes.timeStamp} color="textSecondary">
+                    Creation time: {formatDate}
+                  </Typography>
     			  <Typography gutterBottom variant="headline" component="h4">
     				  {post.title}
     			  </Typography>
@@ -78,7 +93,6 @@ class Post extends Component {
                                     <EditIcon/>
                                 </IconButton>
                             </Tooltip>
-            			  {path &&
                             <Tooltip id="tooltip-detail" title="Delete">
                                 <IconButton
                                 aria-owns={null}
@@ -88,7 +102,7 @@ class Post extends Component {
                                 >
                                     <DeleteIcon/>
                                 </IconButton>
-                            </Tooltip>}
+                            </Tooltip>
                         </Grid>
                     </Grid>
     			</CardActions>
@@ -104,7 +118,7 @@ Post.propTypes = {
 	handleOpenPostModal: PropTypes.func.isRequired
 }
 
-export default connect()(withStyles(styles)(Post))
+export default connect()(withRouter(withStyles(styles)(Post)))
 
 
 

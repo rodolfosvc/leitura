@@ -13,7 +13,8 @@ import Button from '@material-ui/core/Button'
 import { saveComment, deleteComment, updateComment, updateCommentVoteScore } from '../../actions'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
-import VoteScore from '../VoteScore'
+import VoteScore from '../Utils/VoteScore'
+import Typography from '@material-ui/core/Typography'
 
 const styles = {
   cardActions: {
@@ -87,10 +88,18 @@ class Comment extends Component {
 
     const { classes, isAdd } = this.props
     const { comment, editting } = this.state
+    const commentDate = comment ? new Date(comment.timestamp) : null
+    const formatDate = commentDate ?  `${commentDate.getDate()}/${commentDate.getMonth() + 1/* Janeiro = 0 */}/${commentDate.getFullYear()}` : null
+
     return (
       <div>
         {comment && <Card key={comment.id}>
           <CardContent>
+            {!isAdd && !editting &&
+              <Typography className={classes.timeStamp} color="textSecondary">
+                Creation time: {formatDate}
+              </Typography>
+            }
             <TextField
             id="commentBody"
             label="Body"

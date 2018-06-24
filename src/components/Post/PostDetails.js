@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Post from './Post'
-import CommentsList from './Comment/CommentsList'
+import CommentsList from '../Comment/CommentsList'
 import Divider from '@material-ui/core/Divider'
-import { getPostComments } from '../actions'
+import { getPostComments } from '../../actions'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
 
 class PostDetails extends Component {
 
@@ -18,11 +19,19 @@ class PostDetails extends Component {
 		const { post, handleOpenPostModal, postId } = this.props
 
 		return (
-			<div>
-				<Post post={post} handleOpenPostModal={handleOpenPostModal}/>
-        <Divider />
-        <CommentsList postParentId={postId}/>
-			</div>
+        <div>
+          { post &&
+            <div>
+        			<Post post={post} handleOpenPostModal={handleOpenPostModal}/>
+              <Divider />
+              <CommentsList postParentId={postId}/>
+            </div>
+          }
+          { !post &&
+            <Typography variant="headline" component="h2" align="center" >
+              Either this post does not exist or it was deleted!
+            </Typography> }
+        </div>
 		)
 	}
 }

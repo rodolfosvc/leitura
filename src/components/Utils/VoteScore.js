@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
 
 const styles = {
   voteScore: {
@@ -55,6 +56,11 @@ const VoteScore = ({voteFunc, voteValue, classes}) => {
       </Grid>
     </Grid>
   )
+}
+
+VoteScore.propTypes = {
+  voteValue: PropTypes.number.isRequired,
+  voteFunc: PropTypes.func.isRequired
 }
 
 export default withStyles(styles)(VoteScore)

@@ -6,7 +6,7 @@ import Comment from './Comment'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import SortBy from '../SortBy'
+import SortBy from '../Utils/SortBy'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 
