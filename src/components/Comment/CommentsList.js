@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import { sortComments } from '../../actions'
 import Comment from './Comment'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
@@ -9,6 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar'
 import SortBy from '../Utils/SortBy'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
+import CONST from '../../utils/consts'
+import { sortComment } from '../../actions'
 
 const styles = theme => ({
   comment: {
@@ -42,13 +43,9 @@ class CommentsList extends Component {
     this.setState({showAddComment: false})
   }
 
-  sortByCommentsFunc = (option) => {
-    this.props.dispatch(sortComments(option))
-  }
-
   render(){
 
-    const { comments, classes, postParentId } = this.props
+    const { comments, classes, postParentId, sortComment } = this.props
     const { showAddComment } = this.state
 
     return (
@@ -58,7 +55,7 @@ class CommentsList extends Component {
             <Typography variant="title" color="inherit">
             Comments
             </Typography>
-            <SortBy sortByFunc={this.sortByCommentsFunc}/>
+            <SortBy options={CONST.SORT_BY.POST_OPTIONS} onChange={sortComment}/>
             <Button color="inherit" onClick={this.showAddCommentElem}>Add comment</Button>
           </Toolbar>
         </AppBar>
@@ -85,10 +82,17 @@ function mapStateToProps ({ comments }) {
   return { comments }
 }
 
+function mapDispatchToProps (dispatch) {
+  return {
+    sortComment: (option) => dispatch(sortComment(option))
+  }
+}
+
 CommentsList.propTypes = {
 	postParentId: PropTypes.string.isRequired
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(withStyles(styles)(CommentsList))

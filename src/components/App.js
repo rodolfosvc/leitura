@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { fetchCategories, fetchPosts, savePost, updatePost, sortPosts } from '../actions'
+import { fetchCategories, fetchPosts, savePost, updatePost, sortPost } from '../actions'
 import { connect } from 'react-redux'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
@@ -13,6 +13,7 @@ import PostModal from './Post/PostModal'
 import PostList from './Post/PostList'
 import PostDetails from './Post/PostDetails'
 import CategoryMenu from './Category/CategoryMenu'
+import CONST from '../utils/consts'
 
 const styles = {
   appBar: {
@@ -23,6 +24,7 @@ const styles = {
   }
 };
 
+//estado inicial de um novo post
 const defaultPostModal = {
   title: 'New Post',
   category: '',
@@ -40,24 +42,14 @@ class App extends Component {
   componentDidMount(){
     this.props.loadCategories()
     this.props.loadPosts()
-  }
-
-  sortByPostsFunc = (option) => {
-    this.props.sortPostsByOption(option)
+      .then( () => this.props.sortPost({property: 'voteScore', ascending: false}) )
   }
 
   handleOpenPostModal = post => {
-    if(post && post.id){
-      this.setState({
+    this.setState({
         openModalPost: true,
-        postModal: post
+        postModal: post && post.id ? post : defaultPostModal
       })
-    }else{
-      this.setState({
-        openModalPost: true,
-        postModal: defaultPostModal
-      })
-    }
   }
 
   handleClosePostModal = () => {
@@ -90,8 +82,10 @@ class App extends Component {
   }
 
   render() {
+
     const { openModalPost, postModal } = this.state
-    const { categories, classes } = this.props
+    const { categories, classes, sortPost } = this.props
+
     return (
       <BrowserRouter>
         <div>
@@ -100,7 +94,7 @@ class App extends Component {
               <Typography variant="title" color="inherit">
                 Udacity Leitura
               </Typography>
-              <SortBy style={classes.sortBy} sortByFunc={this.sortByPostsFunc}></SortBy>
+              <SortBy style={classes.sortBy} options={CONST.SORT_BY.POST_OPTIONS} onChange={sortPost}></SortBy>
               <Button color="inherit" onClick={this.handleOpenPostModal}>Add post</Button>
             </Toolbar>
           </AppBar>
@@ -141,7 +135,7 @@ function mapDispatchToProps (dispatch) {
     loadCategories: () => dispatch(fetchCategories()),
     savePost: (post) => dispatch(savePost(post)),
     updatePost: (post) => dispatch(updatePost(post)),
-    sortPostsByOption: (option) => dispatch(sortPosts(option))
+    sortPost: (option) => dispatch(sortPost(option))
   }
 }
 

@@ -3,8 +3,9 @@ import {
   ADD_POST,
   REMOVE_POST,
   EDIT_POST,
-  SORT_POSTS
+  SORT_POST
 } from '../actions'
+import CONST from '../utils/consts'
 
 function posts (state = [], action){
   switch(action.type){
@@ -17,15 +18,8 @@ function posts (state = [], action){
       return state.map(p => p.id === action.post.id ? {...p, ...action.post} : p)
     case REMOVE_POST:
       return state.filter(p => p.id !== action.post.id)
-    case SORT_POSTS:
-      const { option } = action
-      return state.slice().sort((p1, p2) => {
-        if(p1[option] < p2[option])
-          return -1
-        if(p1[option] > p2[option])
-          return 1
-        return 0
-      })
+    case SORT_POST:
+      return CONST.SORT_BY.FUNC(state, action.property, action.ascending)
     default:
       return state
   }

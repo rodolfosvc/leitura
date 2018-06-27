@@ -3,9 +3,9 @@ import {
   ADD_COMMENT,
   DELETE_COMMENT,
   EDIT_COMMENT,
-  SORT_COMMENTS
+  SORT_COMMENT
 } from '../actions'
-
+import CONST from '../utils/consts'
 
 function comments (state = [], action){
     switch(action.type){
@@ -18,15 +18,8 @@ function comments (state = [], action){
         return state.map(c => c.id === action.comment.id ? {...c, ...action.comment} : c)
       case DELETE_COMMENT:
         return state.filter(c => c.id !== action.comment.id)
-      case SORT_COMMENTS:
-        const { option } = action
-        return state.slice().sort((c1, c2) => {
-          if(c1[option] < c2[option])
-            return -1
-          if(c1[option] > c2[option])
-            return 1
-          return 0
-        })
+      case SORT_COMMENT:
+        return CONST.SORT_BY.FUNC(state, action.property, action.ascending)
       default:
         return state
     }

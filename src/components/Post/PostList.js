@@ -6,13 +6,16 @@ import PropTypes from 'prop-types'
 const PostList = ({ posts, path, handleOpenPostModal}) => {
     return (
       <div>
-        {posts && posts.map(p => <Post key={p.id} handleOpenPostModal={handleOpenPostModal} path={path} post={p}></Post>)}
+        {posts &&
+          posts.map(p => <Post key={p.id} handleOpenPostModal={handleOpenPostModal} path={path} post={p}></Post>)}
       </div>
     )
 }
 
 function mapStateToProps ({posts}, ownProps) {
-  return { posts: posts.filter(p => ownProps.path === "home" || p.category === ownProps.path)}
+  return {
+    posts: posts.filter(p => ownProps.path === "home" || p.category === ownProps.path),
+  }
 }
 
 PostList.propTypes = {

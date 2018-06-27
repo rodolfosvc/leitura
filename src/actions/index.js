@@ -1,61 +1,11 @@
 import * as ServerAPI from '../utils/ServerAPI'
 import uuidv4 from 'uuid/v4'
 
-export const LOAD_POSTS = 'LOAD_POSTS'
-export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
-export const ADD_POST = 'ADD_POST'
-export const REMOVE_POST = 'REMOVE_POST'
-export const EDIT_POST = 'EDIT_POST'
-export const LOAD_POST_COMMENTS = 'LOAD_POST_COMMENTS'
+/*** COMMENT - BEGIN ***/
 export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
-export const SORT_POSTS = 'SORT_POSTS'
-export const SORT_COMMENTS = 'SORT_COMMENTS'
-
-export const updateCommentVoteScore = (comment, option) => dispatch => {
-  return ServerAPI
-        .VoteComment(comment, option)
-        .then(data => {
-          dispatch(editComment(data))
-        })
-}
-
-export const sortComments = (option) => ({
-    type: SORT_COMMENTS,
-    option
-})
-
-export const sortPosts = (option) => ({
-    type: SORT_POSTS,
-    option
-})
-
-export const editComment = (comment) => ({
-  type: EDIT_COMMENT,
-  comment
-})
-
-export const updateComment = (comment) => dispatch => {
-  return ServerAPI
-        .updateComment(comment)
-        .then( data => {
-          dispatch(editComment(data))
-        })
-}
-
-export const removeComment = (comment) => ({
-  type: DELETE_COMMENT,
-  comment
-})
-
-export const deleteComment = (comment) => dispatch => {
-  return ServerAPI
-        .deleteComment(comment)
-        .then( () => {
-          dispatch(removeComment(comment))
-        })
-}
+export const SORT_COMMENT = 'SORT_COMMENT'
 
 export const addComment = (comment) => ({
   type: ADD_COMMENT,
@@ -75,31 +25,54 @@ export const saveComment = (comment) => dispatch => {
         })
 }
 
-export const loadPostComments = (comments) => ({
-  type: LOAD_POST_COMMENTS,
-  comments
+export const removeComment = (comment) => ({
+  type: DELETE_COMMENT,
+  comment
 })
 
-export const getPostComments = (postId) => dispatch => {
-  return ServerAPI
-        .getPostComments(postId)
-        .then( (comments) => {
-          dispatch(loadPostComments(comments))
-        })
-}
-
-export const removePost = (post) => ({
-  type: REMOVE_POST,
-  post
+export const sortComment = ({property, ascending}) => ({
+  type: SORT_COMMENT,
+  property,
+  ascending
 })
 
-export const deletePost = (post) => dispatch => {
+export const deleteComment = (comment) => dispatch => {
   return ServerAPI
-        .deletePost(post)
+        .deleteComment(comment)
         .then( () => {
-          dispatch(removePost(post))
+          dispatch(removeComment(comment))
         })
 }
+
+export const editComment = (comment) => ({
+  type: EDIT_COMMENT,
+  comment
+})
+
+export const updateCommentVoteScore = (comment, option) => dispatch => {
+  return ServerAPI
+        .VoteComment(comment, option)
+        .then(data => {
+          dispatch(editComment(data))
+        })
+}
+
+export const updateComment = (comment) => dispatch => {
+  return ServerAPI
+        .updateComment(comment)
+        .then( data => {
+          dispatch(editComment(data))
+        })
+}
+/*** COMMENT - END ***/
+
+/*** POST - BEGIN ***/
+export const ADD_POST = 'ADD_POST'
+export const REMOVE_POST = 'REMOVE_POST'
+export const EDIT_POST = 'EDIT_POST'
+export const LOAD_POST_COMMENTS = 'LOAD_POST_COMMENTS'
+export const LOAD_POSTS = 'LOAD_POSTS'
+export const SORT_POST = 'SORT_POST'
 
 export const addPost = (post) => ({
   type: ADD_POST,
@@ -119,9 +92,28 @@ export const savePost = (post) => dispatch => {
         })
 }
 
+export const removePost = (post) => ({
+  type: REMOVE_POST,
+  post
+})
+
+export const deletePost = (post) => dispatch => {
+  return ServerAPI
+        .deletePost(post)
+        .then( () => {
+          dispatch(removePost(post))
+        })
+}
+
 export const editPost = (post) => ({
   type: EDIT_POST,
   post
+})
+
+export const sortPost = ({property, ascending}) => ({
+  type: SORT_POST,
+  property,
+  ascending
 })
 
 export const updatePost = (post) => dispatch => {
@@ -140,6 +132,19 @@ export const updatePostVoteScore = (post, option) => dispatch => {
         })
 }
 
+export const loadPostComments = (comments) => ({
+  type: LOAD_POST_COMMENTS,
+  comments
+})
+
+export const getPostComments = (postId) => dispatch => {
+  return ServerAPI
+        .getPostComments(postId)
+        .then( (comments) => {
+          dispatch(loadPostComments(comments))
+        })
+}
+
 export const loadPosts = (posts) => ({
   type: LOAD_POSTS,
   posts
@@ -152,6 +157,10 @@ export const fetchPosts = () => dispatch => (
         dispatch(loadPosts(posts))
       })
 )
+/*** POST - END ***/
+
+/*** CATEGORY - BEGIN ***/
+export const LOAD_CATEGORIES = 'LOAD_CATEGORIES'
 
 export const loadCategories = (categories) => ({
   type: LOAD_CATEGORIES,
@@ -165,3 +174,5 @@ export const fetchCategories = () => dispatch => (
         dispatch(loadCategories(categories))
       })
 );
+/*** CATEGORY - END ***/
+
