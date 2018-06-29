@@ -10,11 +10,13 @@ import EditIcon from '@material-ui/icons/Edit'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Button from '@material-ui/core/Button'
-import { saveComment, deleteComment, updateComment, updateCommentVoteScore } from '../../actions'
+import { saveComment, deleteComment, updateComment, updateCommentVoteScore, updateCommentCount } from '../../actions'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import VoteScore from '../Utils/VoteScore'
 import Typography from '@material-ui/core/Typography'
+import { formatDate } from '../../utils'
+import { CONSTS } from '../../utils'
 
 const styles = {
   cardActions: {
@@ -40,6 +42,7 @@ class Comment extends Component {
     if(isAdd){
       //dispatch add new comment
       this.props.dispatch(saveComment(comment))
+        .then(this.props.dispatch(updateCommentCount({postId: comment.parentId, value: 1})))
     }else{
       //dispatch update comment
       this.props.dispatch(updateComment(comment))
@@ -62,6 +65,7 @@ class Comment extends Component {
     const { comment } = this.state
     //dispatch delete comment
     this.props.dispatch(deleteComment(comment))
+        .then(this.props.dispatch(updateCommentCount({postId: comment.parentId, value: -1})))
   }
 
   handleChange = propName => event => {
@@ -78,18 +82,20 @@ class Comment extends Component {
     const { comment } = this.state
     const { voteScore } = comment
     this.props.dispatch(updateCommentVoteScore(comment, option))
-    if(option === 'upVote')
-      this.setState({comment: {...comment, voteScore: voteScore + 1}})
-    if(option === 'downVote')
-      this.setState({comment: {...comment, voteScore: voteScore - 1}})
+      .then( () => {
+        if(option === CONSTS.VOTE_SCORE.OPTIONS.UP)
+          this.setState({comment: {...comment, voteScore: voteScore + 1}})
+        if(option === CONSTS.VOTE_SCORE.OPTIONS.DOWN)
+          this.setState({comment: {...comment, voteScore: voteScore - 1}})
+      })
   }
 
   render(){
 
     const { classes, isAdd } = this.props
     const { comment, editting } = this.state
-    const commentDate = comment ? new Date(comment.timestamp) : null
-    const formatDate = commentDate ?  `${commentDate.getDate()}/${commentDate.getMonth() + 1/* Janeiro = 0 */}/${commentDate.getFullYear()}` : null
+    //formata timestamp para exibição
+    const formattedDate = comment ? formatDate(comment.timestamp) : null
 
     return (
       <div>
@@ -97,7 +103,7 @@ class Comment extends Component {
           <CardContent>
             {!isAdd && !editting &&
               <Typography className={classes.timeStamp} color="textSecondary">
-                Creation time: {formatDate}
+                Creation time: {formattedDate}
               </Typography>
             }
             <TextField

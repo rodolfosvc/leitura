@@ -6,6 +6,7 @@ export const ADD_COMMENT = 'ADD_COMMENT'
 export const DELETE_COMMENT = 'DELETE_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const SORT_COMMENT = 'SORT_COMMENT'
+export const UPDATE_COMMENT_COUNT = 'UPDATE_COMMENT_COUNT'
 
 export const addComment = (comment) => ({
   type: ADD_COMMENT,
@@ -34,6 +35,12 @@ export const sortComment = ({property, ascending}) => ({
   type: SORT_COMMENT,
   property,
   ascending
+})
+
+export const updateCommentCount = ({postId, value}) => ({
+  type: UPDATE_COMMENT_COUNT,
+  postId,
+  value
 })
 
 export const deleteComment = (comment) => dispatch => {

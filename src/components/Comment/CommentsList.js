@@ -8,7 +8,6 @@ import Toolbar from '@material-ui/core/Toolbar'
 import SortBy from '../Utils/SortBy'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
-import CONST from '../../utils/consts'
 import { sortComment } from '../../actions'
 
 const styles = theme => ({
@@ -36,7 +35,7 @@ class CommentsList extends Component {
   }
 
   showAddCommentElem = () => {
-    this.setState({ showAddComment: true	})
+    this.setState({showAddComment: true})
   }
 
   hideAddCommentElem = () => {
@@ -53,9 +52,9 @@ class CommentsList extends Component {
         <AppBar position="static" className={classes.commentsBar}>
           <Toolbar>
             <Typography variant="title" color="inherit">
-            Comments
+              Comments
             </Typography>
-            <SortBy options={CONST.SORT_BY.POST_OPTIONS} onChange={sortComment}/>
+            <SortBy onChange={sortComment}/>
             <Button color="inherit" onClick={this.showAddCommentElem}>Add comment</Button>
           </Toolbar>
         </AppBar>
@@ -89,7 +88,7 @@ function mapDispatchToProps (dispatch) {
 }
 
 CommentsList.propTypes = {
-	postParentId: PropTypes.string.isRequired
+	postParent: PropTypes.object
 }
 
 export default connect(

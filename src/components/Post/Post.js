@@ -11,11 +11,13 @@ import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete'
 import EditIcon from '@material-ui/icons/Edit'
 import VisibilityIcon from '@material-ui/icons/Visibility'
+import CommentIcon from '@material-ui/icons/Comment'
 import Tooltip from '@material-ui/core/Tooltip'
 import PropTypes from 'prop-types'
 import Grid from '@material-ui/core/Grid'
 import VoteScore from '../Utils/VoteScore'
 import { withRouter } from 'react-router-dom'
+import { formatDate } from '../../utils'
 
 const styles = {
   cardActions: {
@@ -25,6 +27,14 @@ const styles = {
   timeStamp: {
     marginBottom: 16,
     fontSize: 14
+  },
+  comments: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around'
+  },
+  commentsLabel: {
+    paddingLeft: 5
   }
 }
 
@@ -47,15 +57,16 @@ class Post extends Component {
   render() {
 
     const { post, path, classes, handleOpenPostModal } = this.props
-    const postDate = post ? new Date(post.timestamp) : null
-    const formatDate = postDate ?  `${postDate.getDate()}/${postDate.getMonth() + 1/* Janeiro = 0 */}/${postDate.getFullYear()}` : null
+    const isAdd = !!path
+    //formata data para exibição
+    const formattedDate = post ? formatDate(post.timestamp) : null
 
     return (
       <div>
   		  {post && <Card key={post.id}>
     			<CardContent>
                   <Typography className={classes.timeStamp} color="textSecondary">
-                    Creation time: {formatDate}
+                    Creation time: {formattedDate}
                   </Typography>
     			  <Typography gutterBottom variant="headline" component="h4">
     				  {post.title}
@@ -70,7 +81,11 @@ class Post extends Component {
                             <VoteScore voteFunc={this.clickVoteScore} voteValue={post.voteScore}/>
                         </Grid>
                         <Grid item xs={6} className={classes.cardActions}>
-            				{path &&
+                            <div className={classes.comments}>
+                                <CommentIcon/>
+                                <Typography className={classes.commentsLabel}>{`${post.commentCount} comments`}</Typography>
+                            </div>
+            				{isAdd &&
                                 <Tooltip id="tooltip-detail" title="Details">
                 					<IconButton
                 					aria-owns={null}

@@ -7,17 +7,13 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import { CONSTS } from '../../utils'
 
 const styles = {
   voteScore: {
     paddingTop: 14,
     paddingLeft: 5
   }
-}
-
-const voteOption = {
-    up: 'upVote',
-    down: 'downVote'
 }
 
 const VoteScore = ({voteFunc, voteValue, classes}) => {
@@ -30,7 +26,7 @@ const VoteScore = ({voteFunc, voteValue, classes}) => {
           aria-haspopup="false"
           aria-label="Like"
           color="inherit"
-          onClick={() => voteFunc(voteOption.up)}
+          onClick={() => voteFunc(CONSTS.VOTE_SCORE.OPTIONS.UP)}
           >
             <ThumbUp/>
           </IconButton>
@@ -43,7 +39,7 @@ const VoteScore = ({voteFunc, voteValue, classes}) => {
           aria-haspopup="false"
           aria-label="Dislike"
           color="inherit"
-          onClick={() => voteFunc(voteOption.down)}
+          onClick={() => voteFunc(CONSTS.VOTE_SCORE.OPTIONS.DOWN)}
           >
             <ThumbDown/>
           </IconButton>

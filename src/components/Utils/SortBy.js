@@ -4,6 +4,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import PropTypes from 'prop-types'
+import { CONSTS } from '../../utils'
 
 class SortBy extends Component {
 
@@ -11,10 +12,10 @@ class SortBy extends Component {
     sortByElem: null
   }
 
+  //recupera objeto com as informações para ordenaão dos elementos
   getSortByValue = (value) => {
-    const { options } = this.props
-    return Object.keys(options).find( k => {
-      return options[k].VALUE === value
+    return Object.keys(CONSTS.SORT_BY.OPTIONS).find( k => {
+      return CONSTS.SORT_BY.OPTIONS[k].VALUE === value
     })
   }
 
@@ -23,10 +24,11 @@ class SortBy extends Component {
   }
 
   handleClose = event => {
-    const { options, onChange } = this.props
+    const { onChange } = this.props
     const key = this.getSortByValue(event.target.value)
     if(key){
-      const { PROP, ASC } = options[key]
+      //monta objeto com informações para ordenação
+      const { PROP, ASC } = CONSTS.SORT_BY.OPTIONS[key]
       const sortByInfo = {
         property: PROP,
         ascending: ASC
@@ -39,7 +41,7 @@ class SortBy extends Component {
   render() {
 
     const { sortByElem } = this.state
-    const { style, options } = this.props
+    const { style } = this.props
     const openMenu = Boolean(sortByElem)
 
     return (
@@ -65,10 +67,11 @@ class SortBy extends Component {
             }}
             open={openMenu}
             onClose={this.handleClose}
-          >
-            <MenuItem value={options.SCORE_ASC.VALUE} onClick={this.handleClose}>{options.SCORE_ASC.TEXT}</MenuItem>
-            <MenuItem value={options.SCORE_DESC.VALUE} onClick={this.handleClose}>{options.SCORE_DESC.TEXT}</MenuItem>
-            <MenuItem value={options.DATE_ASC.VALUE} onClick={this.handleClose}>{options.DATE_ASC.TEXT}</MenuItem>
+        >
+          <MenuItem value={CONSTS.SORT_BY.OPTIONS.SCORE_ASC.VALUE} onClick={this.handleClose}>{CONSTS.SORT_BY.OPTIONS.SCORE_ASC.TEXT}</MenuItem>
+          <MenuItem value={CONSTS.SORT_BY.OPTIONS.SCORE_DESC.VALUE} onClick={this.handleClose}>{CONSTS.SORT_BY.OPTIONS.SCORE_DESC.TEXT}</MenuItem>
+          <MenuItem value={CONSTS.SORT_BY.OPTIONS.DATE_ASC.VALUE} onClick={this.handleClose}>{CONSTS.SORT_BY.OPTIONS.DATE_ASC.TEXT}</MenuItem>
+          <MenuItem value={CONSTS.SORT_BY.OPTIONS.DATE_DESC.VALUE} onClick={this.handleClose}>{CONSTS.SORT_BY.OPTIONS.DATE_DESC.TEXT}</MenuItem>
         </Menu>
       </div>
     )
@@ -77,7 +80,6 @@ class SortBy extends Component {
 
 SortBy.propTypes = {
 	style: PropTypes.string,
-  options: PropTypes.object,
   onChange: PropTypes.func
 }
 

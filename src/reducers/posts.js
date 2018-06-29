@@ -3,9 +3,10 @@ import {
   ADD_POST,
   REMOVE_POST,
   EDIT_POST,
-  SORT_POST
+  SORT_POST,
+  UPDATE_COMMENT_COUNT
 } from '../actions'
-import CONST from '../utils/consts'
+import { sortFunc } from '../utils'
 
 function posts (state = [], action){
   switch(action.type){
@@ -19,7 +20,16 @@ function posts (state = [], action){
     case REMOVE_POST:
       return state.filter(p => p.id !== action.post.id)
     case SORT_POST:
-      return CONST.SORT_BY.FUNC(state, action.property, action.ascending)
+      return sortFunc(state, action.property, action.ascending)
+    case UPDATE_COMMENT_COUNT:
+      return state.map(p => {
+          if(p.id === action.postId){
+            return {
+              ...p,
+              commentCount: p['commentCount'] + action.value
+            }
+          }
+          return p})
     default:
       return state
   }

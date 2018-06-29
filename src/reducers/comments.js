@@ -5,7 +5,7 @@ import {
   EDIT_COMMENT,
   SORT_COMMENT
 } from '../actions'
-import CONST from '../utils/consts'
+import { sortFunc } from '../utils'
 
 function comments (state = [], action){
     switch(action.type){
@@ -19,7 +19,7 @@ function comments (state = [], action){
       case DELETE_COMMENT:
         return state.filter(c => c.id !== action.comment.id)
       case SORT_COMMENT:
-        return CONST.SORT_BY.FUNC(state, action.property, action.ascending)
+        return sortFunc(state, action.property, action.ascending)
       default:
         return state
     }

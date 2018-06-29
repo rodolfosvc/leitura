@@ -1,4 +1,6 @@
-const sortFunc = (arr, prop, asc) => {
+//Este arquivo possui funções e constantaes que são usadas por alguns componentes
+
+export const sortFunc = (arr, prop, asc) => {
   if(prop){
     var arrCopy = arr.slice()
     arrCopy.sort((e1, e2) => {
@@ -14,10 +16,20 @@ const sortFunc = (arr, prop, asc) => {
   return arr
 }
 
+export const formatDate = (timestamp) => {
+  if(timestamp){
+    let timestampObj = timestamp
+    if(!(timestampObj instanceof Date)){
+      timestampObj = new Date(timestamp)
+    }
+    return `${timestampObj.getDate()}/${timestampObj.getMonth() + 1/* Janeiro = 0 */}/${timestampObj.getFullYear()}`
+  }
+  return undefined
+}
 
-const CONST = {
+export const CONSTS = {
   SORT_BY: {
-    POST_OPTIONS: {
+    OPTIONS: {
       SCORE_ASC: {
         VALUE: 0,
         PROP: 'voteScore',
@@ -42,9 +54,12 @@ const CONST = {
         TEXT: 'Date (Hight to Low)',
         ASC: false
       }
-    },
-    FUNC: sortFunc
+    }
+  },
+  VOTE_SCORE: {
+    OPTIONS: {
+      UP: 'upVote',
+      DOWN: 'downVote'
+    }
   }
 }
-
-export default CONST

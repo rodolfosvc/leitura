@@ -13,7 +13,7 @@ import PostModal from './Post/PostModal'
 import PostList from './Post/PostList'
 import PostDetails from './Post/PostDetails'
 import CategoryMenu from './Category/CategoryMenu'
-import CONST from '../utils/consts'
+import { CONSTS } from '../utils'
 
 const styles = {
   appBar: {
@@ -42,7 +42,12 @@ class App extends Component {
   componentDidMount(){
     this.props.loadCategories()
     this.props.loadPosts()
-      .then( () => this.props.sortPost({property: 'voteScore', ascending: false}) )
+      .then(
+        () => this.props.sortPost({
+          property: CONSTS.SORT_BY.OPTIONS.SCORE_DESC.PROP,
+          ascending: CONSTS.SORT_BY.OPTIONS.SCORE_DESC.ASC
+        })
+      )
   }
 
   handleOpenPostModal = post => {
@@ -94,7 +99,7 @@ class App extends Component {
               <Typography variant="title" color="inherit">
                 Udacity Leitura
               </Typography>
-              <SortBy style={classes.sortBy} options={CONST.SORT_BY.POST_OPTIONS} onChange={sortPost}></SortBy>
+              <SortBy style={classes.sortBy} onChange={sortPost}></SortBy>
               <Button color="inherit" onClick={this.handleOpenPostModal}>Add post</Button>
             </Toolbar>
           </AppBar>
@@ -111,11 +116,11 @@ class App extends Component {
                 <CategoryMenu categories={categories}></CategoryMenu>
             </Grid>
             <Grid item xs={10}>
-              <Route exact path='/:category' render={({match})=> {
-              return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
+              <Route exact path='/:category' render={ ({match}) => {
+                return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
               }}/>
-              <Route path='/:category/:postId' render={({match})=> {
-              return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
+              <Route path='/:category/:postId' render={ ({match}) => {
+                return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
               }}/>
             </Grid>
           </Grid>
