@@ -17,5 +17,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 1. Clone this git repository
 2. Go to the directory, and run 'npm install' or 'yarn install' in the directory
-3. Go to the 'api-server' folder and run the command 'node server'
+3. Go to the 'src/api-server' folder and run the command 'node server'
 4. Go to the project root directory, and run 'npm start' or 'yarn start' to start the application
