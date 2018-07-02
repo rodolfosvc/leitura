@@ -14,7 +14,7 @@ const PostList = ({ posts, path, handleOpenPostModal}) => {
 
 function mapStateToProps ({posts}, ownProps) {
   return {
-    posts: posts.filter(p => ownProps.path === "home" || p.category === ownProps.path),
+    posts: posts.filter(p => ownProps.path === '/' || ownProps.path === 'home' ||  p.category === ownProps.path),
   }
 }
 

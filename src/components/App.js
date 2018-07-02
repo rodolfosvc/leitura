@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { fetchCategories, fetchPosts, savePost, updatePost, sortPost } from '../actions'
 import { connect } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import AppBar from '@material-ui/core/AppBar'
@@ -116,12 +116,17 @@ class App extends Component {
                 <CategoryMenu categories={categories}></CategoryMenu>
             </Grid>
             <Grid item xs={10}>
-              <Route exact path='/:category' render={ ({match}) => {
-                return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
-              }}/>
-              <Route path='/:category/:postId' render={ ({match}) => {
-                return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
-              }}/>
+              <Switch>
+                <Route exact path='/:category' render={ ({match}) => {
+                  return <PostList handleOpenPostModal={this.handleOpenPostModal} path={match.params.category} />
+                }}/>
+                <Route exact path='/:category/:postId' render={ ({match}) => {
+                  return <PostDetails handleOpenPostModal={this.handleOpenPostModal} postId={match.params.postId} />
+                }}/>
+                <Route render={ () => {
+                  return <PostList handleOpenPostModal={this.handleOpenPostModal} path='/' />
+                }}/>
+              </Switch>
             </Grid>
           </Grid>
         </div>

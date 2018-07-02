@@ -35,6 +35,11 @@ const styles = {
   },
   commentsLabel: {
     paddingLeft: 5
+  },
+  postBody: {
+    paddingTop: 20,
+    paddingBottom: 10,
+    paddingLeft: 10
   }
 }
 
@@ -64,62 +69,66 @@ class Post extends Component {
     return (
       <div>
   		  {post && <Card key={post.id}>
-    			<CardContent>
-                  <Typography className={classes.timeStamp} color="textSecondary">
-                    Creation time: {formattedDate}
-                  </Typography>
+  			 <CardContent>
+            <Typography className={classes.timeStamp} color="textSecondary">
+              Creation time: {formattedDate}
+            </Typography>
     			  <Typography gutterBottom variant="headline" component="h4">
     				  {post.title}
     			  </Typography>
     			  <Typography color="textSecondary">
     				  Author: {post.author}
     			  </Typography>
-    			</CardContent>
-    			<CardActions>
-                    <Grid container spacing={0}>
-                        <Grid item xs={6}>
-                            <VoteScore voteFunc={this.clickVoteScore} voteValue={post.voteScore}/>
-                        </Grid>
-                        <Grid item xs={6} className={classes.cardActions}>
-                            <div className={classes.comments}>
-                                <CommentIcon/>
-                                <Typography className={classes.commentsLabel}>{`${post.commentCount} comments`}</Typography>
-                            </div>
-            				{isAdd &&
-                                <Tooltip id="tooltip-detail" title="Details">
-                					<IconButton
-                					aria-owns={null}
-                					aria-haspopup="false"
-                                    aria-label="Details"
-                					component={Link}
-                					to={`/${path}/${post.id}`}
-                					color="inherit"
-                					>
-                						<VisibilityIcon/>
-                					</IconButton>
-                                </Tooltip>}
-                            <Tooltip id="tooltip-detail" title="Edit">
-                                <IconButton
-                                aria-owns={null}
-                                aria-haspopup="false"
-                                onClick={() => handleOpenPostModal(post)}
-                                color="inherit"
-                                >
-                                    <EditIcon/>
-                                </IconButton>
-                            </Tooltip>
-                            <Tooltip id="tooltip-detail" title="Delete">
-                                <IconButton
-                                aria-owns={null}
-                                aria-haspopup="false"
-                                onClick={() => this.handleRemove(post)}
-                                color="inherit"
-                                >
-                                    <DeleteIcon/>
-                                </IconButton>
-                            </Tooltip>
-                        </Grid>
-                    </Grid>
+             {!isAdd &&
+              <Typography className={classes.postBody} component="p">
+                {post.body}
+              </Typography>}
+  			 </CardContent>
+  			 <CardActions>
+            <Grid container spacing={0}>
+                <Grid item xs={6}>
+                    <VoteScore voteFunc={this.clickVoteScore} voteValue={post.voteScore}/>
+                </Grid>
+                <Grid item xs={6} className={classes.cardActions}>
+                  <div className={classes.comments}>
+                      <CommentIcon/>
+                      <Typography className={classes.commentsLabel}>{`${post.commentCount} comments`}</Typography>
+                  </div>
+  				        {isAdd &&
+                    <Tooltip id="tooltip-detail" title="Details">
+            					<IconButton
+            					aria-owns={null}
+            					aria-haspopup="false"
+                                aria-label="Details"
+            					component={Link}
+            					to={`/${post.category}/${post.id}`}
+            					color="inherit"
+            					>
+            						<VisibilityIcon/>
+            					</IconButton>
+                    </Tooltip>}
+                    <Tooltip id="tooltip-detail" title="Edit">
+                        <IconButton
+                        aria-owns={null}
+                        aria-haspopup="false"
+                        onClick={() => handleOpenPostModal(post)}
+                        color="inherit"
+                        >
+                            <EditIcon/>
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip id="tooltip-detail" title="Delete">
+                        <IconButton
+                        aria-owns={null}
+                        aria-haspopup="false"
+                        onClick={() => this.handleRemove(post)}
+                        color="inherit"
+                        >
+                            <DeleteIcon/>
+                        </IconButton>
+                    </Tooltip>
+                </Grid>
+            </Grid>
     			</CardActions>
   		  </Card>}
       </div>

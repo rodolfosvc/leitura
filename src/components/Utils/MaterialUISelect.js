@@ -34,7 +34,7 @@ class MaterialUISelect extends Component {
 
     return (
       <FormControl className={classes.formControl}>
-        <InputLabel htmlFor="categorySelect">Categorie</InputLabel>
+        <InputLabel htmlFor="categorySelect">Category</InputLabel>
         <Select
           open={open}
           onClose={this.handleClose}
@@ -62,7 +62,7 @@ class MaterialUISelect extends Component {
   function mapStateToProps ({categories }) {
     return { categories }
   }
-  
+
   MaterialUISelect.propTypes = {
 	post: PropTypes.object.isRequired,
 	onChange: PropTypes.func.isRequired

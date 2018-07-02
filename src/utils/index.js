@@ -33,25 +33,25 @@ export const CONSTS = {
       SCORE_ASC: {
         VALUE: 0,
         PROP: 'voteScore',
-        TEXT: 'Vote Score (Low to Hight)',
+        TEXT: 'Vote Score (Low to High)',
         ASC: true
       },
       SCORE_DESC: {
         VALUE: 1,
         PROP: 'voteScore',
-        TEXT: 'Vote Score (Hight to Low)',
+        TEXT: 'Vote Score (High to Low)',
         ASC: false
       },
       DATE_ASC: {
         VALUE: 2,
         PROP: 'timestamp',
-        TEXT: 'Date (Low to Hight)',
+        TEXT: 'Date (Low to High)',
         ASC: true
       },
       DATE_DESC: {
         VALUE: 3,
         PROP: 'timestamp',
-        TEXT: 'Date (Hight to Low)',
+        TEXT: 'Date (High to Low)',
         ASC: false
       }
     }
